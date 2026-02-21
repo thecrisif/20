@@ -7,493 +7,229 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-
 :root {
-  --rose:    #e8305a;
-  --rose2:   #ff7096;
-  --rose3:   #ffd6e0;
-  --magenta: #c9184a;
-  --cream:   #fff5f7;
-  --blush:   #ffe4ec;
-  --gold:    #c9973a;
-  --dark:    #2b1520;
-  --purple:  #9d4edd;
+  --rose:#e8305a; --rose2:#ff7096; --magenta:#c9184a;
+  --cream:#fff5f7; --gold:#c9973a; --dark:#2b1520; --purple:#9d4edd;
 }
-
-html, body {
-  height: 100%;
-  overflow: hidden;
-}
-
+html,body { height:100%; }
 body {
-  font-family: 'Montserrat', sans-serif;
-  background: var(--cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  font-family:'Montserrat',sans-serif;
+  background:var(--cream);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; min-height:100vh;
 }
-
-/* ── FONDO ANIMADO ── */
 .bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
+  position:fixed; inset:0; z-index:0;
   background:
-    radial-gradient(ellipse at 15% 25%, rgba(232,48,90,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 75%, rgba(157,78,221,0.10) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(255,112,150,0.07) 0%, transparent 60%),
-    linear-gradient(160deg, #fff5f7 0%, #ffe8f0 50%, #f9e8ff 100%);
-  animation: bgMove 8s ease-in-out infinite alternate;
+    radial-gradient(ellipse at 15% 25%,rgba(232,48,90,.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 75%,rgba(157,78,221,.10) 0%,transparent 55%),
+    linear-gradient(160deg,#fff5f7 0%,#ffe8f0 50%,#f9e8ff 100%);
+  animation:bgMove 8s ease-in-out infinite alternate;
 }
-@keyframes bgMove {
-  from { filter: hue-rotate(0deg); }
-  to   { filter: hue-rotate(15deg); }
-}
+@keyframes bgMove { from{filter:hue-rotate(0deg)} to{filter:hue-rotate(15deg)} }
 
-/* ── PÉTALOS ── */
 .petal {
-  position: fixed;
-  pointer-events: none;
-  font-size: 1rem;
-  animation: petal-fall linear infinite;
-  z-index: 1;
-  opacity: 0;
+  position:fixed; pointer-events:none;
+  animation:petal-fall linear infinite; z-index:1; opacity:0;
 }
 @keyframes petal-fall {
-  0%   { transform: translateY(-60px) rotate(0deg) scale(0.8); opacity: 0; }
-  10%  { opacity: 0.7; }
-  90%  { opacity: 0.5; }
-  100% { transform: translateY(110vh) rotate(500deg) scale(1.1); opacity: 0; }
+  0%{transform:translateY(-60px) rotate(0deg);opacity:0}
+  10%{opacity:.7} 90%{opacity:.4}
+  100%{transform:translateY(110vh) rotate(500deg);opacity:0}
 }
 
-/* ── PANTALLA SOBRE ── */
+/* FECHA */
+#screen-fecha {
+  position:fixed; inset:0; z-index:30;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:28px; padding:24px;
+  animation:fadeIn 1s ease both;
+}
+@keyframes fadeIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+
+.fecha-card {
+  background:linear-gradient(155deg,#fff8fa,#fff0f5);
+  border-radius:24px; padding:40px 32px;
+  max-width:360px; width:100%; text-align:center;
+  box-shadow:0 30px 80px rgba(232,48,90,.18),0 0 0 1px rgba(232,48,90,.1),inset 0 1px 0 rgba(255,255,255,.9);
+  position:relative;
+}
+.fecha-card::before {
+  content:''; position:absolute; inset:12px;
+  border:1px dashed rgba(232,48,90,.15); border-radius:14px; pointer-events:none;
+}
+.fecha-emoji { font-size:3rem; display:block; margin-bottom:14px; animation:latido 1.6s ease-in-out infinite; }
+@keyframes latido { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+.fecha-titulo { font-family:'Dancing Script',cursive; font-size:2rem; color:var(--rose); margin-bottom:8px; }
+.fecha-sub {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:.9rem; color:rgba(43,21,32,.5); margin-bottom:28px; line-height:1.6;
+}
+.fecha-inputs { display:flex; gap:10px; justify-content:center; margin-bottom:20px; }
+.fecha-input {
+  width:72px; padding:12px 8px; border-radius:12px;
+  border:1.5px solid rgba(232,48,90,.25); background:rgba(255,255,255,.8);
+  color:var(--dark); font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem; font-weight:600; text-align:center; outline:none; transition:all .3s;
+}
+.fecha-input:focus { border-color:var(--rose); box-shadow:0 0 16px rgba(232,48,90,.2); }
+.fecha-input::placeholder { color:rgba(43,21,32,.2); }
+.fecha-sep { font-size:1.5rem; color:var(--rose2); align-self:center; }
+.btn-ingresar {
+  background:linear-gradient(135deg,var(--rose),var(--magenta)); color:white;
+  border:none; padding:14px 40px; border-radius:50px;
+  font-family:'Dancing Script',cursive; font-size:1.3rem; cursor:pointer;
+  box-shadow:0 8px 32px rgba(232,48,90,.35); transition:all .3s; width:100%;
+}
+.btn-ingresar:hover { transform:translateY(-3px); box-shadow:0 14px 40px rgba(232,48,90,.5); }
+.fecha-error { color:var(--rose); font-size:.8rem; font-weight:500; min-height:20px; margin-top:8px; animation:shake .4s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+
+/* SOBRE */
 #screen-sobre {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  animation: fadeIn 1.4s ease both;
+  position:fixed; inset:0; z-index:10;
+  display:none; flex-direction:column;
+  align-items:center; justify-content:center; gap:32px;
 }
-@keyframes fadeIn {
-  from { opacity:0; transform: scale(0.9); }
-  to   { opacity:1; transform: scale(1); }
-}
-
 .sobre-scene {
-  position: relative;
-  width: 300px;
-  height: 210px;
-  cursor: pointer;
-  transition: transform 0.4s cubic-bezier(.2,.8,.3,1);
-  filter: drop-shadow(0 20px 50px rgba(232,48,90,0.3));
+  width:300px; height:210px; position:relative; cursor:pointer;
+  transition:transform .4s cubic-bezier(.2,.8,.3,1);
+  filter:drop-shadow(0 20px 50px rgba(232,48,90,.3));
 }
-.sobre-scene:hover { transform: translateY(-8px) rotate(-1.5deg) scale(1.04); }
-
-/* Cuerpo del sobre */
+.sobre-scene:hover { transform:translateY(-8px) rotate(-1.5deg) scale(1.04); }
 .sobre-body {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(145deg, #fff0f5, #ffe0ec);
-  border-radius: 10px;
-  border: 1.5px solid rgba(232,48,90,0.25);
-  overflow: hidden;
+  position:absolute; inset:0;
+  background:linear-gradient(145deg,#fff0f5,#ffe0ec);
+  border-radius:10px; border:1.5px solid rgba(232,48,90,.25); overflow:hidden;
 }
-.sobre-body::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent 60%, rgba(255,112,150,0.08));
-}
-
-/* Líneas decorativas */
-.sobre-lines {
-  position: absolute;
-  inset: 10px;
-  border: 1px dashed rgba(232,48,90,0.15);
-  border-radius: 6px;
-  pointer-events: none;
-}
-
-/* Solapa inferior */
+.sobre-lines { position:absolute; inset:10px; border:1px dashed rgba(232,48,90,.15); border-radius:6px; pointer-events:none; }
 .flap-bottom {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 115px;
-  background: linear-gradient(160deg, #ffc2d4, #ffb3c6);
-  clip-path: polygon(0 100%, 50% 5%, 100% 100%);
-  border-radius: 0 0 10px 10px;
+  position:absolute; bottom:0; left:0; right:0; height:115px;
+  background:linear-gradient(160deg,#ffc2d4,#ffb3c6);
+  clip-path:polygon(0 100%,50% 5%,100% 100%); border-radius:0 0 10px 10px;
 }
-
-/* Solapa superior */
 .flap-top {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 115px;
-  background: linear-gradient(160deg, #ffd6e4, #ffc2d4);
-  clip-path: polygon(0 0, 50% 95%, 100% 0);
-  transform-origin: top;
-  transition: transform 0.7s cubic-bezier(.4,0,.2,1);
-  z-index: 2;
-  border-radius: 10px 10px 0 0;
+  position:absolute; top:0; left:0; right:0; height:115px;
+  background:linear-gradient(160deg,#ffd6e4,#ffc2d4);
+  clip-path:polygon(0 0,50% 95%,100% 0);
+  transform-origin:top; transition:transform .7s cubic-bezier(.4,0,.2,1);
+  z-index:2; border-radius:10px 10px 0 0;
 }
-.sobre-scene:hover .flap-top {
-  transform: perspective(600px) rotateX(-160deg);
-}
-
-/* Sello */
+.sobre-scene:hover .flap-top { transform:perspective(600px) rotateX(-160deg); }
 .sello {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3.2rem;
-  z-index: 3;
-  animation: latido 1.6s ease-in-out infinite;
-  filter: drop-shadow(0 4px 12px rgba(232,48,90,0.4));
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-size:3.2rem; z-index:3; animation:latido 1.6s ease-in-out infinite;
+  filter:drop-shadow(0 4px 12px rgba(232,48,90,.4));
 }
-@keyframes latido {
-  0%,100% { transform: translate(-50%,-50%) scale(1); }
-  50%      { transform: translate(-50%,-50%) scale(1.2); }
-}
-
-/* Nombre en sobre */
 .sobre-nombre {
-  position: absolute;
-  bottom: 18px; left: 0; right: 0;
-  text-align: center;
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.15rem;
-  color: var(--magenta);
-  z-index: 4;
-  letter-spacing: 0.05em;
+  position:absolute; bottom:18px; left:0; right:0; text-align:center;
+  font-family:'Dancing Script',cursive; font-size:1.1rem; color:var(--magenta); z-index:4;
 }
-
-/* Mini corazones en esquinas del sobre */
-.sobre-corner {
-  position: absolute;
-  font-size: 0.8rem;
-  opacity: 0.5;
-  z-index: 4;
-}
-
-/* Botón abrir */
+.sobre-corner { position:absolute; font-size:.8rem; opacity:.5; z-index:4; }
 .btn-abrir {
-  background: linear-gradient(135deg, var(--rose), var(--magenta));
-  color: white;
-  border: none;
-  padding: 15px 44px;
-  border-radius: 50px;
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.35rem;
-  cursor: pointer;
-  box-shadow:
-    0 8px 32px rgba(232,48,90,0.4),
-    0 0 0 3px rgba(255,255,255,0.8),
-    0 0 0 5px rgba(232,48,90,0.15);
-  transition: all 0.3s;
-  letter-spacing: 0.03em;
+  background:linear-gradient(135deg,var(--rose),var(--magenta)); color:white;
+  border:none; padding:15px 44px; border-radius:50px;
+  font-family:'Dancing Script',cursive; font-size:1.35rem; cursor:pointer;
+  box-shadow:0 8px 32px rgba(232,48,90,.4),0 0 0 3px rgba(255,255,255,.8),0 0 0 5px rgba(232,48,90,.15);
+  transition:all .3s;
 }
-.btn-abrir:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow:
-    0 16px 48px rgba(232,48,90,0.5),
-    0 0 0 3px rgba(255,255,255,0.9),
-    0 0 0 6px rgba(232,48,90,0.2);
-}
+.btn-abrir:hover { transform:translateY(-4px) scale(1.03); }
+.hint-fecha { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.9rem; color:rgba(43,21,32,.4); letter-spacing:.2em; }
 
-.hint-fecha {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 0.9rem;
-  color: rgba(43,21,32,0.4);
-  letter-spacing: 0.2em;
-}
-
-/* ── PANTALLA CARTA ── */
+/* CARTA */
 #screen-carta {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: rgba(43,21,32,0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  overflow-y: auto;
-  padding: 24px 16px 40px;
-  align-items: flex-start;
-  justify-content: center;
+  display:none; position:fixed; inset:0; z-index:20;
+  background:rgba(43,21,32,.65); backdrop-filter:blur(12px);
+  overflow-y:auto; padding:24px 16px 40px;
+  align-items:flex-start; justify-content:center;
 }
-
 .carta {
-  background: linear-gradient(155deg, #fff8fa 0%, #fff0f5 50%, #fef0ff 100%);
-  border-radius: 24px;
-  padding: 44px 32px 36px;
-  max-width: 460px;
-  width: 100%;
-  margin: auto;
-  position: relative;
-  box-shadow:
-    0 40px 100px rgba(232,48,90,0.2),
-    0 0 0 1px rgba(232,48,90,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-  animation: cartaAparece 0.8s cubic-bezier(.2,.8,.3,1) both;
-  text-align: center;
+  background:linear-gradient(155deg,#fff8fa 0%,#fff0f5 50%,#fef0ff 100%);
+  border-radius:24px; padding:44px 32px 36px;
+  max-width:460px; width:100%; margin:auto;
+  position:relative;
+  box-shadow:0 40px 100px rgba(232,48,90,.2),0 0 0 1px rgba(232,48,90,.12),inset 0 1px 0 rgba(255,255,255,.9);
+  animation:cartaAparece .8s cubic-bezier(.2,.8,.3,1) both;
+  text-align:center;
 }
-
-@keyframes cartaAparece {
-  from { opacity:0; transform: scale(0.6) translateY(60px) rotateX(15deg); }
-  to   { opacity:1; transform: scale(1) translateY(0) rotateX(0deg); }
-}
-
-/* Borde decorativo interior */
-.carta::before {
-  content: '';
-  position: absolute;
-  inset: 12px;
-  border: 1px dashed rgba(232,48,90,0.18);
-  border-radius: 16px;
-  pointer-events: none;
-}
-
-/* Esquinas decorativas */
-.corner-deco {
-  position: absolute;
-  font-size: 1rem;
-  opacity: 0.4;
-}
-
-/* Encabezado carta */
-.carta-header {
-  margin-bottom: 24px;
-}
-
-.carta-emoji-top {
-  font-size: 1.8rem;
-  display: block;
-  margin-bottom: 10px;
-  animation: spin-slow 8s linear infinite;
-}
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
+@keyframes cartaAparece { from{opacity:0;transform:scale(.6) translateY(60px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.carta::before { content:''; position:absolute; inset:12px; border:1px dashed rgba(232,48,90,.18); border-radius:16px; pointer-events:none; }
+.corner-deco { position:absolute; font-size:1rem; opacity:.4; }
+.carta-emoji-top { font-size:1.8rem; display:block; margin-bottom:10px; animation:spin-slow 8s linear infinite; }
+@keyframes spin-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 .carta-titulo {
-  font-family: 'Dancing Script', cursive;
-  font-size: 3rem;
-  background: linear-gradient(135deg, var(--rose), var(--purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.1;
-  margin-bottom: 6px;
+  font-family:'Dancing Script',cursive; font-size:3rem;
+  background:linear-gradient(135deg,var(--rose),var(--purple));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  line-height:1.1; margin-bottom:6px;
 }
-
-.carta-subtitulo {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 0.85rem;
-  color: var(--gold);
-  letter-spacing: 0.25em;
-  margin-bottom: 4px;
+.carta-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.85rem; color:var(--gold); letter-spacing:.25em; margin-bottom:4px; }
+.badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:linear-gradient(135deg,rgba(232,48,90,.1),rgba(157,78,221,.1));
+  border:1px solid rgba(232,48,90,.2); border-radius:30px;
+  padding:5px 16px; font-size:.72rem; font-weight:500; letter-spacing:.15em; color:var(--rose); margin-top:8px;
 }
-
-.aniversario-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, rgba(232,48,90,0.1), rgba(157,78,221,0.1));
-  border: 1px solid rgba(232,48,90,0.2);
-  border-radius: 30px;
-  padding: 5px 16px;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  color: var(--rose);
-  margin-top: 8px;
-}
-
-/* Peluche */
-.peluche-wrap {
-  margin: 28px 0 24px;
-  position: relative;
-  display: inline-block;
-}
-
-.peluche {
-  font-size: 6rem;
-  display: block;
-  animation: peluche-float 3.5s ease-in-out infinite;
-  filter: drop-shadow(0 12px 24px rgba(232,48,90,0.25));
-  line-height: 1;
-}
-@keyframes peluche-float {
-  0%,100% { transform: translateY(0) rotate(-4deg) scale(1); }
-  50%      { transform: translateY(-14px) rotate(4deg) scale(1.05); }
-}
-
-.peluche-hearts {
-  position: absolute;
-  inset: -20px;
-  pointer-events: none;
-}
-
-.mini-heart {
-  position: absolute;
-  font-size: 0.9rem;
-  animation: heartFloat 2.5s ease-in-out infinite;
-  opacity: 0;
-}
-@keyframes heartFloat {
-  0%   { transform: translateY(0) scale(0.5); opacity: 0; }
-  30%  { opacity: 1; }
-  100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
-}
-
-/* Frases */
-.frases-titulo {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: rgba(43,21,32,0.45);
-  letter-spacing: 0.1em;
-  margin-bottom: 18px;
-}
-
-.frases {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 32px;
-  text-align: left;
-}
-
+.peluche-wrap { margin:28px 0 24px; position:relative; display:inline-block; }
+.peluche { font-size:6rem; display:block; animation:peluche-float 3.5s ease-in-out infinite; filter:drop-shadow(0 12px 24px rgba(232,48,90,.25)); line-height:1; }
+@keyframes peluche-float { 0%,100%{transform:translateY(0) rotate(-4deg) scale(1)} 50%{transform:translateY(-14px) rotate(4deg) scale(1.05)} }
+.peluche-hearts { position:absolute; inset:-20px; pointer-events:none; }
+.mini-heart { position:absolute; font-size:.9rem; animation:heartFloat 2.5s ease-in-out infinite; opacity:0; }
+@keyframes heartFloat { 0%{transform:translateY(0) scale(.5);opacity:0} 30%{opacity:1} 100%{transform:translateY(-50px) scale(1.2);opacity:0} }
+.frases-titulo { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; color:rgba(43,21,32,.45); letter-spacing:.1em; margin-bottom:18px; }
+.frases { display:flex; flex-direction:column; gap:14px; margin-bottom:32px; text-align:left; }
 .frase {
-  background: linear-gradient(135deg, rgba(255,192,210,0.18), rgba(255,220,240,0.25));
-  border: 1px solid rgba(232,48,90,0.14);
-  border-radius: 16px;
-  padding: 16px 18px;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-  position: relative;
-  overflow: hidden;
+  background:linear-gradient(135deg,rgba(255,192,210,.18),rgba(255,220,240,.25));
+  border:1px solid rgba(232,48,90,.14); border-radius:16px;
+  padding:16px 18px; display:flex; gap:12px; align-items:flex-start;
+  opacity:0; transform:translateX(-24px);
+  transition:opacity .55s ease,transform .55s ease;
+  position:relative; overflow:hidden;
 }
-.frase::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: linear-gradient(to bottom, var(--rose2), var(--purple));
-  border-radius: 3px 0 0 3px;
-}
-.frase.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.frase-icon {
-  font-size: 1.4rem;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.frase-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.02rem;
-  color: var(--dark);
-  line-height: 1.65;
-}
-
-.frase-text em {
-  font-style: italic;
-  color: var(--magenta);
-}
-
-/* Separador */
-.sep {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 8px 0 20px;
-  opacity: 0.35;
-}
-.sep-line { flex: 1; height: 1px; background: var(--rose2); }
-.sep-icon { font-size: 0.9rem; }
-
-/* Firma */
-.carta-firma {
-  margin-top: 8px;
-}
-
-.firma-texto {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: rgba(43,21,32,0.5);
-  margin-bottom: 6px;
-}
-
-.firma-nombre {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2rem;
-  background: linear-gradient(135deg, var(--rose), var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
+.frase::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(to bottom,var(--rose2),var(--purple)); border-radius:3px 0 0 3px; }
+.frase.visible { opacity:1; transform:translateX(0); }
+.frase-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+.frase-text { font-family:'Cormorant Garamond',serif; font-size:1.02rem; color:var(--dark); line-height:1.65; }
+.frase-text em { font-style:italic; color:var(--magenta); }
+.sep { display:flex; align-items:center; gap:12px; margin:8px 0 20px; opacity:.35; }
+.sep-line { flex:1; height:1px; background:var(--rose2); }
+.firma-texto { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; color:rgba(43,21,32,.5); margin-bottom:6px; }
+.firma-nombre { font-family:'Dancing Script',cursive; font-size:2rem; background:linear-gradient(135deg,var(--rose),var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .confetti-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 20px;
-  background: none;
-  border: 1.5px solid var(--rose);
-  color: var(--rose);
-  padding: 10px 26px;
-  border-radius: 50px;
-  font-family: 'Dancing Script', cursive;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  letter-spacing: 0.03em;
+  display:inline-flex; align-items:center; gap:8px; margin-top:20px;
+  background:none; border:1.5px solid var(--rose); color:var(--rose);
+  padding:10px 26px; border-radius:50px;
+  font-family:'Dancing Script',cursive; font-size:1.1rem; cursor:pointer; transition:all .3s;
 }
-.confetti-btn:hover {
-  background: var(--rose);
-  color: white;
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(232,48,90,0.35);
-}
-
-/* Confetti */
-.confetti-piece {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  animation: confettiDrop linear forwards;
-  z-index: 999;
-  pointer-events: none;
-}
-@keyframes confettiDrop {
-  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
+.confetti-btn:hover { background:var(--rose); color:white; transform:scale(1.05); }
+.confetti-piece { position:fixed; border-radius:2px; animation:confettiDrop linear forwards; z-index:999; pointer-events:none; }
+@keyframes confettiDrop { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
 </style>
 </head>
 <body>
 
 <div class="bg"></div>
+<audio id="musica" loop><source src="musica.mp3" type="audio/mpeg"></audio>
 
-<!-- PANTALLA SOBRE -->
+<!-- FECHA -->
+<div id="screen-fecha">
+  <div class="fecha-card">
+    <span class="fecha-emoji">🔐</span>
+    <div class="fecha-titulo">Talia, ¿recuerdas?</div>
+    <div class="fecha-sub">Ingresa la fecha especial<br>en que todo comenzó 💕</div>
+    <div class="fecha-inputs">
+      <input class="fecha-input" id="dia" type="number" placeholder="DD" min="1" max="31">
+      <span class="fecha-sep">·</span>
+      <input class="fecha-input" id="mes" type="number" placeholder="MM" min="1" max="12">
+      <span class="fecha-sep">·</span>
+      <input class="fecha-input" id="anio" type="number" placeholder="AAAA" style="width:90px">
+    </div>
+    <div class="fecha-error" id="fecha-error"></div>
+    <button class="btn-ingresar" onclick="verificarFecha()">💌 Abrir mi sorpresa</button>
+  </div>
+</div>
+
+<!-- SOBRE -->
 <div id="screen-sobre">
   <div class="sobre-scene" onclick="abrirCarta()">
     <div class="sobre-body">
@@ -506,157 +242,108 @@ body {
       <div class="sobre-nombre">Para Talia, con todo mi amor 💕</div>
     </div>
   </div>
-
-  <button class="btn-abrir" onclick="abrirCarta()">
-    ✨ Abrir mi carta
-  </button>
-
+  <button class="btn-abrir" onclick="abrirCarta()">✨ Abrir mi carta</button>
   <div class="hint-fecha">20 · 01 · 2022</div>
 </div>
 
-<!-- PANTALLA CARTA -->
+<!-- CARTA -->
 <div id="screen-carta">
   <div class="carta">
-
     <span class="corner-deco" style="top:22px;left:22px">🌸</span>
     <span class="corner-deco" style="top:22px;right:22px">✨</span>
     <span class="corner-deco" style="bottom:22px;left:22px">💕</span>
     <span class="corner-deco" style="bottom:22px;right:22px">🌹</span>
-
-    <div class="carta-header">
-      <span class="carta-emoji-top">💫</span>
-      <div class="carta-titulo">Talia</div>
-      <div class="carta-subtitulo">20 · 01 · 2022 &nbsp;—&nbsp; 20 · 02 · 2026</div>
-      <div class="aniversario-badge">🎊 &nbsp; 4 AÑOS JUNTOS &nbsp; 🎊</div>
-    </div>
-
-    <!-- Peluche -->
+    <span class="carta-emoji-top">💫</span>
+    <div class="carta-titulo">Talia</div>
+    <div class="carta-sub">20 · 01 · 2022 &nbsp;—&nbsp; 20 · 02 · 2026</div>
+    <div class="badge">🎊 &nbsp;4 AÑOS JUNTOS&nbsp; 🎊</div>
     <div class="peluche-wrap">
       <span class="peluche">🧸</span>
       <div class="peluche-hearts">
         <span class="mini-heart" style="top:0;left:10%;animation-delay:0s">💗</span>
-        <span class="mini-heart" style="top:10%;right:5%;animation-delay:0.6s">💕</span>
+        <span class="mini-heart" style="top:10%;right:5%;animation-delay:.6s">💕</span>
         <span class="mini-heart" style="top:20%;left:0;animation-delay:1.2s">🌸</span>
         <span class="mini-heart" style="bottom:0;right:10%;animation-delay:1.8s">💖</span>
-        <span class="mini-heart" style="bottom:10%;left:15%;animation-delay:0.9s">✨</span>
+        <span class="mini-heart" style="bottom:10%;left:15%;animation-delay:.9s">✨</span>
       </div>
     </div>
-
     <div class="frases-titulo">— Para ti, en nuestro día —</div>
-
     <div class="frases" id="frases">
-
-      <div class="frase">
-        <span class="frase-icon">💞</span>
-        <div class="frase-text">
-          Desde el día que te conocí, el mundo se volvió más bonito. <em>Eres mi lugar favorito en el universo.</em>
-        </div>
-      </div>
-
-      <div class="frase">
-        <span class="frase-icon">🌹</span>
-        <div class="frase-text">
-          Cuatro años a tu lado me han enseñado que el amor verdadero no caduca — <em>crece, florece y se renueva cada día.</em>
-        </div>
-      </div>
-
-      <div class="frase">
-        <span class="frase-icon">✨</span>
-        <div class="frase-text">
-          Eres la persona que hace que cada momento valga la pena. <em>Mi calma, mi alegría, mi todo.</em>
-        </div>
-      </div>
-
-      <div class="frase">
-        <span class="frase-icon">🦋</span>
-        <div class="frase-text">
-          Me enamoro de ti cada vez que sonríes, cada vez que hablas, cada vez que simplemente estás. <em>Siempre.</em>
-        </div>
-      </div>
-
-      <div class="frase">
-        <span class="frase-icon">💫</span>
-        <div class="frase-text">
-          Gracias por quedarte, por elegirme, por amarme. <em>Hoy y siempre, te amo, Talia.</em> 💕
-        </div>
-      </div>
-
+      <div class="frase"><span class="frase-icon">💞</span><div class="frase-text">Desde el día que te conocí, el mundo se volvió más bonito. <em>Eres mi lugar favorito en el universo.</em></div></div>
+      <div class="frase"><span class="frase-icon">🌹</span><div class="frase-text">Cuatro años a tu lado me han enseñado que el amor verdadero no caduca — <em>crece, florece y se renueva cada día.</em></div></div>
+      <div class="frase"><span class="frase-icon">✨</span><div class="frase-text">Eres la persona que hace que cada momento valga la pena. <em>Mi calma, mi alegría, mi todo.</em></div></div>
+      <div class="frase"><span class="frase-icon">🦋</span><div class="frase-text">Me enamoro de ti cada vez que sonríes, cada vez que hablas, cada vez que simplemente estás. <em>Siempre.</em></div></div>
+      <div class="frase"><span class="frase-icon">💫</span><div class="frase-text">Gracias por quedarte, por elegirme, por amarme. <em>Hoy y siempre, te amo, Talia.</em> 💕</div></div>
     </div>
-
-    <div class="sep">
-      <div class="sep-line"></div>
-      <span class="sep-icon">💗</span>
-      <div class="sep-line"></div>
-    </div>
-
-    <div class="carta-firma">
-      <div class="firma-texto">Con todo mi amor,</div>
-      <div class="firma-nombre">THE CRIS IF 💕</div>
-    </div>
-
-    <button class="confetti-btn" onclick="lanzarConfetti()">
-      🎊 Celebrar nuestro amor
-    </button>
-
+    <div class="sep"><div class="sep-line"></div><span>💗</span><div class="sep-line"></div></div>
+    <div class="firma-texto">Con todo mi amor,</div>
+    <div class="firma-nombre">THE CRIS IF 💕</div>
+    <button class="confetti-btn" onclick="lanzarConfetti()">🎊 Celebrar nuestro amor</button>
   </div>
 </div>
 
-<!-- Pétalos -->
-<div id="petals-container"></div>
-
 <script>
-// Crear pétalos de fondo
+// Pétalos
 const emojis = ['🌸','💕','✨','🌹','💗','🦋','💫','🌷'];
-const container = document.getElementById('petals-container');
-
-for(let i = 0; i < 22; i++) {
-  const p = document.createElement('div');
-  p.className = 'petal';
-  p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  p.style.left = Math.random() * 100 + 'vw';
-  p.style.fontSize = (0.7 + Math.random() * 1) + 'rem';
-  p.style.animationDuration = (6 + Math.random() * 10) + 's';
-  p.style.animationDelay = (Math.random() * 10) + 's';
-  p.style.opacity = 0.4 + Math.random() * 0.4;
+for(let i=0;i<22;i++){
+  const p=document.createElement('div');
+  p.className='petal';
+  p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  p.style.left=Math.random()*100+'vw';
+  p.style.fontSize=(0.7+Math.random()*1)+'rem';
+  p.style.animationDuration=(6+Math.random()*10)+'s';
+  p.style.animationDelay=(Math.random()*10)+'s';
   document.body.appendChild(p);
 }
 
-function abrirCarta() {
-  const sobre = document.getElementById('screen-sobre');
-  const carta = document.getElementById('screen-carta');
+function verificarFecha(){
+  const dia=document.getElementById('dia').value.trim();
+  const mes=document.getElementById('mes').value.trim();
+  const anio=document.getElementById('anio').value.trim();
+  const error=document.getElementById('fecha-error');
 
-  sobre.style.animation = 'fadeIn 0.4s ease reverse forwards';
-  setTimeout(() => {
-    sobre.style.display = 'none';
-    carta.style.display = 'flex';
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
-
-    // Animar frases una por una
-    const frases = document.querySelectorAll('.frase');
-    frases.forEach((f, i) => {
-      setTimeout(() => f.classList.add('visible'), 500 + i * 350);
-    });
-  }, 350);
+  if(dia==='20' && mes==='1' && anio==='2022'){
+    document.getElementById('screen-fecha').style.display='none';
+    document.getElementById('screen-sobre').style.display='flex';
+    const audio=document.getElementById('musica');
+    audio.volume=0.5;
+    audio.play().catch(()=>{});
+  } else {
+    error.textContent='❌ Esa no es nuestra fecha... intenta de nuevo 💕';
+    setTimeout(()=>error.textContent='',2500);
+  }
 }
 
-function lanzarConfetti() {
-  const colores = ['#e8305a','#ff7096','#9d4edd','#c9a73a','#ff9cc2','#c9184a'];
-  for(let i = 0; i < 80; i++) {
-    const c = document.createElement('div');
-    c.className = 'confetti-piece';
-    c.style.left = Math.random() * 100 + 'vw';
-    c.style.background = colores[Math.floor(Math.random() * colores.length)];
-    c.style.width = (6 + Math.random() * 8) + 'px';
-    c.style.height = (6 + Math.random() * 8) + 'px';
-    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-    c.style.animationDuration = (2 + Math.random() * 3) + 's';
-    c.style.animationDelay = (Math.random() * 0.8) + 's';
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter') verificarFecha();
+});
+
+function abrirCarta(){
+  document.getElementById('screen-sobre').style.display='none';
+  const carta=document.getElementById('screen-carta');
+  carta.style.display='flex';
+  document.body.style.overflow='auto';
+  document.querySelectorAll('.frase').forEach((f,i)=>{
+    setTimeout(()=>f.classList.add('visible'),500+i*350);
+  });
+}
+
+function lanzarConfetti(){
+  const cols=['#e8305a','#ff7096','#9d4edd','#c9a73a','#ff9cc2','#c9184a'];
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');
+    c.className='confetti-piece';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=cols[Math.floor(Math.random()*cols.length)];
+    c.style.width=(6+Math.random()*8)+'px';
+    c.style.height=(6+Math.random()*8)+'px';
+    c.style.borderRadius=Math.random()>.5?'50%':'2px';
+    c.style.animationDuration=(2+Math.random()*3)+'s';
+    c.style.animationDelay=(Math.random()*.8)+'s';
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 5000);
+    setTimeout(()=>c.remove(),5000);
   }
 }
 </script>
 </body>
 </html>
-
